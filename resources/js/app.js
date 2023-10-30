@@ -7,6 +7,5 @@ Alpine.start();
 import $ from "jquery";
 window.$ = $;
 
-
 //Plugins
 import 'jquery-mask-plugin';
