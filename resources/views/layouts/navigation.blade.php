@@ -10,12 +10,28 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+                @php
+                    $navLinks = [
+                        [
+                            'name' => 'Dashboard',
+                            'url' => "dashboard",
+                        ],
+                        [
+                            'name' => 'Pacientes',
+                            'url' => 'patient.index',
+                        ]
+                    ]
+                @endphp
+
+
+                @foreach ($navLinks as $navLink)
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route($navLink['url'])" :active="request()->routeIs($navLink['url'])">
+                            {{-- {{ __('Dashboard') }} --}}
+                            {{ $navLink['name'] }}
+                        </x-nav-link>
+                    </div>
+                @endforeach
             </div>
 
             <!-- Settings Dropdown -->

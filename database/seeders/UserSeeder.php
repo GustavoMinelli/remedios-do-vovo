@@ -16,9 +16,9 @@ class UserSeeder extends Seeder
         $user = new User();
 
         $user->name = 'Admin';
-        $user->email = 'admin@test.com';
+        $user->email = 'gustavodiasminelli@gmail.com';
         $user->email_verified_at = now();
-        $user->password = bcrypt('teste');
+        $user->password = bcrypt('admin');
 
         $user->save();
     }

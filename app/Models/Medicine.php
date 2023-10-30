@@ -9,8 +9,8 @@ class Medicine extends Model
 {
     use HasFactory;
 
-    public function pacient() {
-        return $this->belongsToMany(Pacient::class);
+    public function patients() {
+        return $this->belongsToMany(Patient::class);
     }   
 
 }

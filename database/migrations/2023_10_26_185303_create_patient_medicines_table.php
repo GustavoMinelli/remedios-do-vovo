@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pacient_medicines', function (Blueprint $table) {
+        Schema::create('patient_medicines', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Pacient::class, 'pacient_id')->constrained();
+            $table->foreignIdFor(\App\Models\Patient::class, 'patient_id')->constrained();
             $table->foreignIdFor(\App\Models\Medicine::class, 'medicine_id')->constrained();
             $table->unsignedInteger('day_of_week');
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pacient_medicines');
+        Schema::dropIfExists('patient_medicines');
     }
 };
