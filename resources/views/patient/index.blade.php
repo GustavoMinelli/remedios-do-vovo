@@ -26,6 +26,7 @@
                                 <th class="">Nome</th>
                                 <th class="">Email</th>
                                 <th class="">Telefone</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
 
@@ -36,6 +37,10 @@
                                     <td>{{ $patient->name }} {{ $patient->surname }}</td>
                                     <td>{{ $patient->email }}</td>
                                     <td>{{ $patient->phone }}</td>
+                                    <td>
+                                        <x-primary-link-button href="pacientes/{{ $patient->id }}/editar"><i class="fas fa-edit"></i></x-primary-link-button>
+                                        <x-primary-link-button><i class="fas fa-trash"></i></x-primary-link-button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

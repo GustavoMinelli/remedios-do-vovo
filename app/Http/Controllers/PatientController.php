@@ -29,6 +29,11 @@ class PatientController extends Controller
 
     }
 
+    /**
+     * Cria um novo paciente e retorna para o form de criação
+     *
+     * @return View
+     */
     public function create(): View {
 
         $patient = new Patient();
@@ -40,7 +45,22 @@ class PatientController extends Controller
         return view('patient.create-edit', $data);
     }
 
+    public function edit(Request $request, $patientId): View {
 
+        try {
+
+            $patient = Patient::findOrFail($patientId);
+
+
+        } catch (\Throwable $th) {
+        }
+
+        $data = [
+            'patient' => $patient,
+        ];
+
+        return view('patient.create-edit', $data);
+    }
     /**
      * Insere um novo paciente na base de dados
      *
@@ -52,9 +72,7 @@ class PatientController extends Controller
         try {
 
             $patient = new Patient();
-    
             $this->save($request, $patient);
-    
             return redirect('pacientes')->with('success', 'Paciente criado com sucesso!');
 
         } catch (\Exception $e) {
@@ -62,27 +80,30 @@ class PatientController extends Controller
         }
     }
 
+    /**
+     * Atualiza um paciente ja existente
+     *
+     * @param PatientRequest $request
+     * @return RedirectResponse
+     */
     public function update(PatientRequest $request): RedirectResponse {
 
         try {
 
             $patient = Patient::findOrFail($request->id);
-
             $this->save($request, $patient);
-
             return redirect('pacientes')->with('success', 'Paciente atualizado com sucesso!');
             
         } catch (ModelNotFoundException $e) {
-
             return redirect('pacientes')->with('error', 'Paciente não encontrado!');
 
         } catch (\Exception $e) {
 
+            Log::error("[PatientController][Update] Erro ao atualizar paciente: " . $e->getMessage());
             return redirect('pacientes')->with('error', 'Erro ao atualizar paciente!');
 
         }
     }
-
 
     /**
      * Salva o paciente no banco de dados
@@ -96,7 +117,11 @@ class PatientController extends Controller
         try {
 
             $patient->name = $request->name;
+            $patient->surname = $request->surname;
             $patient->cpf = $request->cpf;
+            $patient->email = $request->email;
+            $patient->birth_date = $request->birth_date;
+            $patient->phone = $request->phone;
 
             $patient->save();
     
@@ -104,10 +129,23 @@ class PatientController extends Controller
 
         } catch (\Exception $e) {
 
+            throw new \Exception($e->getMessage());
+
             Log::error("[PatientController][Save] Erro ao salvar paciente: " . $e->getMessage());
 
             return false;
         }
+
+    }
+
+    /**
+     * Deleta um paciente
+     *
+     * @param PatientRequest $request
+     * @param Patient $patient
+     * @return void
+     */
+    public function delete(PatientRequest $request, Patient $patient) {
 
     }
 }
