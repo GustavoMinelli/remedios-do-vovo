@@ -24,9 +24,8 @@ class PatientController extends Controller
         $data = [
             'patients' => $patients,
         ];
-        
-        return view('patient.index', $data);
 
+        return view('patient.index', $data);
     }
 
     /**
@@ -41,19 +40,11 @@ class PatientController extends Controller
         $data = [
             'patient' => $patient,
         ];
-        
+
         return view('patient.create-edit', $data);
     }
 
-    public function edit(Request $request, $patientId): View {
-
-        try {
-
-            $patient = Patient::findOrFail($patientId);
-
-
-        } catch (\Throwable $th) {
-        }
+    public function edit(Patient $patient): View {
 
         $data = [
             'patient' => $patient,
@@ -72,10 +63,14 @@ class PatientController extends Controller
         try {
 
             $patient = new Patient();
-            $this->save($request, $patient);
-            return redirect('pacientes')->with('success', 'Paciente criado com sucesso!');
 
+            $this->save($request, $patient);
+
+            return redirect('pacientes')->with('success', 'Paciente criado com sucesso!');
         } catch (\Exception $e) {
+
+            Log::error('[PatientController][Insert] Erro ao criar paciente: ' . $e->getMessage());
+
             return redirect('pacientes')->with('error', 'Erro ao criar paciente!');
         }
     }
@@ -86,56 +81,19 @@ class PatientController extends Controller
      * @param PatientRequest $request
      * @return RedirectResponse
      */
-    public function update(PatientRequest $request): RedirectResponse {
+    public function update(PatientRequest $request, Patient $patient): RedirectResponse {
 
         try {
 
-            $patient = Patient::findOrFail($request->id);
             $this->save($request, $patient);
+
             return redirect('pacientes')->with('success', 'Paciente atualizado com sucesso!');
-            
-        } catch (ModelNotFoundException $e) {
-            return redirect('pacientes')->with('error', 'Paciente não encontrado!');
-
         } catch (\Exception $e) {
 
-            Log::error("[PatientController][Update] Erro ao atualizar paciente: " . $e->getMessage());
+            Log::error('[PatientController][Update] Erro ao atualizar paciente: ' . $e->getMessage());
+
             return redirect('pacientes')->with('error', 'Erro ao atualizar paciente!');
-
         }
-    }
-
-    /**
-     * Salva o paciente no banco de dados
-     *
-     * @param PatientRequest $request
-     * @param Patient $patient
-     * @return boolean
-     */
-    private function save(PatientRequest $request, Patient $patient): bool {
-
-        try {
-
-            $patient->name = $request->name;
-            $patient->surname = $request->surname;
-            $patient->cpf = $request->cpf;
-            $patient->email = $request->email;
-            $patient->birth_date = $request->birth_date;
-            $patient->phone = $request->phone;
-
-            $patient->save();
-    
-            return true;
-
-        } catch (\Exception $e) {
-
-            throw new \Exception($e->getMessage());
-
-            Log::error("[PatientController][Save] Erro ao salvar paciente: " . $e->getMessage());
-
-            return false;
-        }
-
     }
 
     /**
@@ -145,7 +103,37 @@ class PatientController extends Controller
      * @param Patient $patient
      * @return void
      */
-    public function delete(PatientRequest $request, Patient $patient) {
+    public function delete(Patient $patient): RedirectResponse {
 
+        try {
+
+            $patient->delete();
+
+            return redirect('pacientes')->with('success', 'Paciente deletado com sucesso!');
+
+        } catch (\Exception $e) {
+
+            Log::error('[PatientController][Delete] Erro ao deletar paciente: ' . $e->getMessage());
+
+            return redirect('pacientes')->with('error', 'Erro ao deletar paciente!');
+        }
+    }
+
+    /**
+     * Salva o paciente no banco de dados
+     *
+     * @param PatientRequest $request
+     * @param Patient $patient
+     * @return void
+     */
+    private function save(PatientRequest $request, Patient $patient): void {
+        $patient->name = $request->name;
+        $patient->surname = $request->surname;
+        $patient->cpf = $request->cpf;
+        $patient->email = $request->email;
+        $patient->birth_date = $request->birth_date;
+        $patient->phone = $request->phone;
+
+        $patient->save();
     }
 }

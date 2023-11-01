@@ -35,3 +35,5 @@ require __DIR__.'/resources/patient.php';
 require __DIR__.'/resources/profile.php';
 
 require __DIR__.'/auth.php';
+
+require __DIR__.'/resources/medicine.php';
