@@ -13,13 +13,27 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = new User();
 
-        $user->name = 'Admin';
-        $user->email = 'gustavodiasminelli@gmail.com';
-        $user->email_verified_at = now();
-        $user->password = bcrypt('admin');
+        User::factory()->create([
+            'name' => 'Administrador',
+            'email' => 'admin@admin.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('remedios'),
+        ]);
 
-        $user->save();
+        $names = [
+           'Gustavo', 'Iure',
+        ];
+
+        foreach ($names as $name) {
+            User::factory()->create([
+                'name' => $name,
+                'email' => mb_strtolower($name) . '@gmail.com',
+                'password' => bcrypt('remedios'),
+            ]);
+        }
+
+        User::factory(2)->create();
+
     }
 }

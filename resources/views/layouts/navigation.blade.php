@@ -19,7 +19,11 @@
                         [
                             'name' => 'Pacientes',
                             'url' => 'patient.index',
-                        ]
+                        ],
+                        [
+                            'name' => 'Remédios',
+                            'url' => 'medicine.index',
+                        ],
                     ]
                 @endphp
 
