@@ -31,10 +31,10 @@ class MedicineController extends Controller
     public function index(Request $request): View
     {
 
-        $medications = Medicine::orderBy('id')->paginate(10);
+        $medicine = Medicine::orderBy('id')->paginate(10);
 
         $data = [
-            'medications' => $medications,
+            'medicine' => $medicine,
         ];
 
         return view('medicine.index', $data);
@@ -67,18 +67,15 @@ class MedicineController extends Controller
     {
         try {
 
-            //Tenta buscar um id de Medicine
-            $medicine = Medicine::findOrFail($request->id);
+            $medicine = new Medicine();
 
             $this->save($request, $medicine);
 
             return redirect('remedios')->with('success', 'Remédio atualizado com sucesso!');
 
         //Se não encontrar um id de medicine, identifica o erro
-        } catch (\Exception $e) {
-
+        } catch (ModelNotFoundException $e) {
             return redirect('remedios')->with('error', 'Remédio não encontrado!');
-
         }
 
     }

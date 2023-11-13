@@ -29,7 +29,7 @@
                         </thead>
 
                         <tbody class="h-10">
-                            @foreach ($medications as $medication)
+                            @foreach ($medicine as $medication)
                                 <tr class="border-solid border-0 border-b border-slate-700 last:border-transparent">
                                     <td>{{ $medication->id }}</td>
                                     <td>{{ $medication->name }}</td>
@@ -39,7 +39,7 @@
                         </tbody>
                     </table>
 
-                    @if (count($medications) >= 10)
+                    @if (count($medicine) >= 10)
                         <div class="mt-5 flex flex-row-reverse w-full basis-10">
                             <x-primary-link-button class="" href="{{ route('medicine.create') }}">
                                 {{ __('Novo Remédio') }}
@@ -47,7 +47,7 @@
                         </div>
                     @endif
 
-                    {{ $medications->links() }}
+                    {{ $medicine->links() }}
 
                 </div>
             </div>

@@ -26,6 +26,7 @@
                     <form method="POST" action="{{ url('remedios') }}">
 
                         @csrf
+                        
                         @method($isEdit ? 'put' : 'post')
 
                         <input type="hidden" value="{{ $medicine->id }}">
