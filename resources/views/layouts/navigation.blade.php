@@ -21,7 +21,7 @@
                             'url' => 'patient.index',
                         ],
                         [
-                            'name' => 'Medicamentos',
+                            'name' => 'Remédios',
                             'url' => 'medicine.index',
                         ],
                     ]
