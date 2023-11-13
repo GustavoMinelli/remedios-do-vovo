@@ -24,12 +24,13 @@
                         </x-primary-link-button>
                     </div>
 
-                    <form method="POST" action="{{ url('pacientes') }}">
+                    <form method="POST" action="{{ $isEdit ? url("pacientes/$patient->id") : url("pacientes") }}">
                         
                         @csrf
-                        @method($isEdit ? 'put' : 'post')
 
-                        <input type="hidden" value="{{ $patient->id }}">
+                        @method($isEdit ? 'PATCH' : 'post')
+
+                        <input type="hidden" name="id" value="{{ $patient->id }}">
 
                         <div class="mb-3">
                             <div class="flex w-full space-x-5 mb-2">
